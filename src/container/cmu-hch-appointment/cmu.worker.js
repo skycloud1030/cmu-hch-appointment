@@ -59,6 +59,7 @@ function fetch_data(room, timeCode) {
       });
 
       next_number = next_number ? next_number : 0;
+      // 過號
       const register = _.filter(
         appointment_list,
         (item) => item.status == "registered" && item.number < current_number
@@ -67,6 +68,7 @@ function fetch_data(room, timeCode) {
       self.postMessage({
         room,
         info,
+        total: _.size(appointment_list),
         current_number,
         next_number,
         register,

@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import React from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { Row, Col } from "antd";
 import { Card } from "antd";
 import { useParams } from "react-router-dom";
@@ -29,13 +30,12 @@ function Layout() {
   const [loading, setLoading] = useState(false);
 
   const onChangeBooking = useCallback((event) => {
-    const val = event.target.value;
-    requestAnimationFrame(() => setBooking(_.toNumber(val)));
+    const val = _.toNumber(event.target.value);
+    requestAnimationFrame(() => setBooking(val));
   }, []);
 
   useEffect(() => {
     if (!_.isEmpty(data)) setLoading(true);
-
     cvWorker = new Worker();
     cvWorker.postMessage({
       type: "fetch",
@@ -43,7 +43,7 @@ function Layout() {
       timeCode: timecode,
     });
     cvWorker.onmessage = (res) => {
-      setData({ ...res.data, total: _.size(res.data.list) });
+      setData(res.data);
       setLoading(false);
     };
     return () => {
@@ -69,7 +69,7 @@ function Layout() {
     let status;
 
     switch (true) {
-      case diff <= 5 && diff > 0:
+      case diff <= 20 && diff > 0:
         status = "exception";
         break;
       case diff == 0:
