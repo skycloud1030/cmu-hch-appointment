@@ -4,11 +4,11 @@ import { Card } from "antd";
 import { useParams } from "react-router-dom";
 import { Progress } from "antd";
 import { Spin } from "antd";
+import { Input } from "antd";
 import Worker from "./cmu.worker.js";
 import styles from "./index.cssm";
 import dayjs from "dayjs";
 import _ from "lodash";
-import { InputNumber } from "antd";
 import Badge from "react-shields-badge";
 import "react-shields-badge/dist/react-shields-badge.css";
 let cvWorker;
@@ -28,8 +28,9 @@ function Layout() {
   const [progress, setProgress] = useState({ percent: 100, status: "normal" });
   const [loading, setLoading] = useState(false);
 
-  const onChangeBooking = useCallback((val) => {
-    requestAnimationFrame(() => setBooking(val));
+  const onChangeBooking = useCallback((event) => {
+    const val = event.target.value;
+    requestAnimationFrame(() => setBooking(_.toNumber(val)));
   }, []);
 
   useEffect(() => {
@@ -42,7 +43,7 @@ function Layout() {
       timeCode: timecode,
     });
     cvWorker.onmessage = (res) => {
-      setData(res.data);
+      setData({ ...res.data, total: _.size(res.data.list) });
       setLoading(false);
     };
     return () => {
@@ -80,7 +81,6 @@ function Layout() {
     }
     percent = diff > 0 ? percent : 100;
     setProgress({ percent, status });
-    
   }, [booking, data.current_number]);
 
   useEffect(() => {}, [booking, data.current_number]);
@@ -100,6 +100,9 @@ function Layout() {
               </div>
               <div>
                 <Badge data={["最近更新", dayjs().format("MM-DD HH:mm")]} />
+              </div>
+              <div>
+                <Badge data={["總人數", data.total]} />
               </div>
               <div>
                 <Badge data={["過號人數", _.size(data.register)]} />
@@ -125,11 +128,12 @@ function Layout() {
             </Col>
           </Row>
           <Row>
-            <span className={styles.label}>就診號:</span>
-            <InputNumber
+            <Input
+              style={{ width: 100 }}
               min={0}
               max={1024}
-              defaultValue={booking}
+              type="number"
+              placeholder="就診號"
               onChange={onChangeBooking}
             />
           </Row>
