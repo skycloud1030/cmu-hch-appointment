@@ -1,0 +1,35 @@
+.content {
+  padding: 50px;
+}
+
+@media only screen and (max-width: 992px) {
+  .content {
+    padding: 12px;
+  }
+}
+
+.time {
+  color: rgba(0, 0, 0, 0.25);
+  font-style: normal;
+  font-size: 14px;
+  text-align: left;
+}
+.subTitle {
+  font-size: 40px;;
+}
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 180px;
+}
+.row{
+  margin-bottom: 12px;
+}
+.label{
+  line-height: 32px;
+  margin-right: 8px;
+}
+.card{
+  min-height: 400px;
+}
