@@ -2,10 +2,12 @@ import React from "react";
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { Row, Col } from "antd";
 import { Card } from "antd";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { Progress } from "antd";
 import { Spin } from "antd";
 import { Input } from "antd";
+import { Button } from "antd";
+import { HomeOutlined } from "@ant-design/icons";
 import Worker from "./cmu.worker.js";
 import styles from "./index.cssm";
 import dayjs from "dayjs";
@@ -15,9 +17,24 @@ import "react-shields-badge/dist/react-shields-badge.css";
 let cvWorker;
 
 const Title = React.memo((props) => {
+  const history = useHistory();
+  const onGobak = useCallback(() => {
+    history.push("/appointment");
+  }, []);
+
   return (
     <Row className={styles.title}>
-      <Col xs={24}>{props.room}</Col>
+      <Col xs={24}>
+        <Button
+          type="primary"
+          shape="circle"
+          onClick={onGobak}
+          icon={<HomeOutlined />}
+          className={styles.back}
+          size="large"
+        />
+        {props.room}
+      </Col>
     </Row>
   );
 });
@@ -51,6 +68,7 @@ function Layout() {
     };
   }, [room, timecode]);
 
+  // const goback = useHistory()
   const title = <Title room={data.room} />;
   const timeText = useMemo(() => {
     switch (timecode) {
@@ -87,12 +105,12 @@ function Layout() {
 
   return (
     <div className={styles.content}>
-      <Spin spinning={loading}>
-        <Card
-          title={title}
-          loading={_.isEmpty(data.room)}
-          className={styles.card}
-        >
+      <Card
+        title={title}
+        loading={_.isEmpty(data.room)}
+        className={styles.card}
+      >
+        <Spin spinning={loading}>
           <Row className={styles.row}>
             <Col xs={24}>
               <div>
@@ -137,8 +155,8 @@ function Layout() {
               onChange={onChangeBooking}
             />
           </Row>
-        </Card>
-      </Spin>
+        </Spin>
+      </Card>
     </div>
   );
 }

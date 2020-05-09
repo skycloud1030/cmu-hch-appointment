@@ -1,13 +1,3 @@
-.content {
-  padding: 50px;
-}
-
-@media only screen and (max-width: 992px) {
-  .content {
-    padding: 64px 24px;
-  }
-}
-
 .time {
   color: rgba(0, 0, 0, 0.25);
   font-style: normal;
@@ -15,7 +5,7 @@
   text-align: left;
 }
 .subTitle {
-  font-size: 40px;;
+  font-size: 40px;
 }
 .center {
   display: flex;
@@ -23,13 +13,17 @@
   justify-content: center;
   height: 180px;
 }
-.row{
+.row {
   margin-bottom: 12px;
 }
-.label{
+.label {
   line-height: 32px;
   margin-right: 8px;
 }
-.card{
+.card {
   min-height: 400px;
+}
+
+.back {
+  margin-right: 8px;
 }
