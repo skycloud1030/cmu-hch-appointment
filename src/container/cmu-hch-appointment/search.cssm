@@ -1,4 +1,14 @@
-.input {
-  width: 200px;
-  margin-bottom: 12px;
+.form {
+  max-width: 600px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.button :global .ant-form-item-control{
+  display: flex;
+  align-items: center;
 }

@@ -11,9 +11,11 @@ import { HomeOutlined } from "@ant-design/icons";
 import Worker from "./cmu.worker.js";
 import styles from "./index.cssm";
 import dayjs from "dayjs";
+import AppoList from "./list.js";
 import _ from "lodash";
 import Badge from "react-shields-badge";
 import "react-shields-badge/dist/react-shields-badge.css";
+
 let cvWorker;
 
 const Title = React.memo((props) => {
@@ -39,6 +41,10 @@ const Title = React.memo((props) => {
   );
 });
 
+const onEnter = (e) => {
+  e.currentTarget.blur();
+};
+
 function Layout() {
   const { room, timecode } = useParams();
   const [data, setData] = useState({ current_number: 0 });
@@ -59,8 +65,9 @@ function Layout() {
       room: room,
       timeCode: timecode,
     });
-    cvWorker.onmessage = (res) => {
-      setData(res.data);
+    cvWorker.onmessage = ({ data }) => {
+      const { type, ...rest } = data;
+      if (type == "success") setData(rest);
       setLoading(false);
     };
     return () => {
@@ -68,7 +75,7 @@ function Layout() {
     };
   }, [room, timecode]);
 
-  // const goback = useHistory()
+  
   const title = <Title room={data.room} />;
   const timeText = useMemo(() => {
     switch (timecode) {
@@ -101,62 +108,72 @@ function Layout() {
     setProgress({ percent, status });
   }, [booking, data.current_number]);
 
-  useEffect(() => {}, [booking, data.current_number]);
+  const init = useMemo(() => _.isEmpty(data.room), [data.room]);
 
   return (
-    <div className={styles.content}>
-      <Card
-        title={title}
-        loading={_.isEmpty(data.room)}
-        className={styles.card}
-      >
-        <Spin spinning={loading}>
-          <Row className={styles.row}>
-            <Col xs={24}>
-              <div>
-                <Badge data={["看診時段", timeText]} />
-              </div>
-              <div>
-                <Badge data={["最近更新", dayjs().format("MM-DD HH:mm")]} />
-              </div>
-              <div>
-                <Badge data={["總人數", data.total]} />
-              </div>
-              <div>
-                <Badge data={["過號人數", _.size(data.register)]} />
-              </div>
-            </Col>
-            <Col xs={24}>
-              <div className={styles.center}>
-                <Progress
-                  type="circle"
-                  percent={progress.percent}
-                  status={progress.status}
-                  width={180}
-                  strokeWidth={8}
-                  format={() => (
-                    <>
-                      <div
-                        className={styles.subTitle}
-                      >{`${data.current_number}`}</div>
-                    </>
-                  )}
+    <div>
+      <Row className={styles.row}>
+        <Col xs={24}>
+          <Card title={title} loading={init} className={styles.card}>
+            <Spin spinning={loading}>
+              <Row className={styles.row}>
+                <Col xs={24}>
+                  <div>
+                    <Badge data={["看診時段", timeText]} />
+                  </div>
+                  <div>
+                    <Badge data={["最近更新", dayjs().format("MM-DD HH:mm")]} />
+                  </div>
+                  <div>
+                    <Badge data={["總人數", data.total]} />
+                  </div>
+                  <div>
+                    <Badge data={["過號人數", _.size(data.register)]} />
+                  </div>
+                </Col>
+                <Col xs={24}>
+                  <div className={styles.center}>
+                    <Progress
+                      type="circle"
+                      percent={progress.percent}
+                      status={progress.status}
+                      width={180}
+                      strokeWidth={8}
+                      format={() => (
+                        <>
+                          <div
+                            className={styles.subTitle}
+                          >{`${data.current_number}`}</div>
+                        </>
+                      )}
+                    />
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <Input
+                  style={{ width: 100 }}
+                  min={0}
+                  max={1024}
+                  type="number"
+                  placeholder="就診號"
+                  onChange={onChangeBooking}
+                  onPressEnter={onEnter}
                 />
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Input
-              style={{ width: 100 }}
-              min={0}
-              max={1024}
-              type="number"
-              placeholder="就診號"
-              onChange={onChangeBooking}
-            />
-          </Row>
-        </Spin>
-      </Card>
+              </Row>
+            </Spin>
+          </Card>
+        </Col>
+      </Row>
+      <Row className={styles.row}>
+        <Col xs={24}>
+          <Card loading={init}>
+            <Spin spinning={loading}>
+              <AppoList data={data.list} current_number={data.current_number} />
+            </Spin>
+          </Card>
+        </Col>
+      </Row>
     </div>
   );
 }

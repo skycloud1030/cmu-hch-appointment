@@ -39,10 +39,10 @@ function fetch_data(room, timeCode) {
       let current_number = 0;
       let next_number;
 
-      let match_room = room.match(regex_room);
-      let match_info = info.match(regex_room);
-      let match_number = number.match(regex_number);
       try {
+        let match_room = room.match(regex_room);
+        let match_info = info.match(regex_room);
+        let match_number = number.match(regex_number);
         // number_info = match_number ? match_number[1] : "";
         room = match_room ? match_room[1] : "";
         info = match_info ? match_info[1] : "";
@@ -66,6 +66,7 @@ function fetch_data(room, timeCode) {
       );
 
       self.postMessage({
+        type: "success",
         room,
         info,
         total: _.size(appointment_list),

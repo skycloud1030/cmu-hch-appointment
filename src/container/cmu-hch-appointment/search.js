@@ -1,49 +1,56 @@
 import React from "react";
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 import { Card } from "antd";
 import { Input } from "antd";
 import { Select } from "antd";
 import { Button } from "antd";
 import { useHistory } from "react-router-dom";
 import { AimOutlined } from "@ant-design/icons";
-const { Option } = Select;
+import { Form } from "antd";
 import styles from "./search.cssm";
 
+const { Option } = Select;
+
 function Search() {
-  const [room, setRoom] = useState("");
-  const [timecode, setTimecode] = useState("1");
   const history = useHistory();
-  const onSearch = useCallback(() => {
+  const onFinish = useCallback(({ room, timecode }) => {
     history.push(`/appointment/${room}/${timecode}`);
-  }, [room, timecode]);
+  }, []);
 
   return (
     <Card>
-      <div>
-        <Input
-          min={0}
-          max={2048}
-          prefix={<AimOutlined />}
-          type="number"
-          placeholder="診間號碼"
-          onChange={(e) => setRoom(e.target.value)}
-          className={styles.input}
-        />
-      </div>
-      <div>
-        <Select
-          defaultValue={timecode}
-          className={styles.input}
-          onChange={(value) => setTimecode(value)}
+      <div className={styles.content}>
+        <Form
+          onFinish={onFinish}
+          name="search"
+          initialValues={{ timecode: "1" }}
+          className={styles.form}
         >
-          <Option value="1">上午</Option>
-          <Option value="2">下午</Option>
-          <Option value="3">晚上</Option>
-        </Select>
+          <Form.Item
+            label="看診時段"
+            name="timecode"
+            rules={[{ required: true }]}
+          >
+            <Select>
+              <Option value="1">上午</Option>
+              <Option value="2">下午</Option>
+              <Option value="3">晚上</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item
+            label="診間號碼"
+            name="room"
+            rules={[{ required: true, message: "請輸入診間號" }]}
+          >
+            <Input prefix={<AimOutlined />} />
+          </Form.Item>
+          <Form.Item className={styles.button}>
+            <Button type="primary" htmlType="submit">
+              查詢
+            </Button>
+          </Form.Item>
+        </Form>
       </div>
-      <Button type="primary" onClick={onSearch}>
-        查詢
-      </Button>
     </Card>
   );
 }
