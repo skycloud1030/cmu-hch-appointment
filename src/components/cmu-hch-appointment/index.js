@@ -10,6 +10,7 @@ import { Button } from "antd";
 import { Empty } from "antd";
 import { Switch } from "antd";
 import { Space } from "antd";
+import { BackTop } from "antd";
 import { HomeOutlined } from "@ant-design/icons";
 import useNotification from "../../hooks/useNotification.js";
 import Worker from "./cmu.worker.js";
@@ -201,6 +202,7 @@ function Layout() {
             </Spin>
           </Card>
         </Col>
+        <BackTop />
       </Row>
     </div>
   );

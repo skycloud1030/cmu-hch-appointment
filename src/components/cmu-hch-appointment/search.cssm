@@ -1,5 +1,6 @@
 .form {
   max-width: 600px;
+  width: 100%;
 }
 
 .content {
@@ -8,7 +9,7 @@
   align-items: center;
 }
 
-.button :global .ant-form-item-control{
+.button :global .ant-form-item-control {
   display: flex;
   align-items: center;
 }
