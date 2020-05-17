@@ -5,6 +5,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
+const AntdDayjsWebpackPlugin = require("antd-dayjs-webpack-plugin");
 
 var config = {
   optimization: {
@@ -31,6 +32,7 @@ var config = {
     globalObject: "this",
   },
   plugins: [
+    new AntdDayjsWebpackPlugin(),
     new CopyWebpackPlugin([{ from: "src/assert", to: "./" }]),
     new HtmlWebpackPlugin({
       filename: "index.html",
@@ -57,7 +59,7 @@ var config = {
         loader: "babel-loader",
         query: {
           cacheDirectory: true,
-          plugins: [["import", { libraryName: "antd", style: "css" }]],
+          // plugins: [["import", { libraryName: "antd", style: "css" }]],
         },
       },
       {
@@ -90,7 +92,19 @@ var config = {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
-      { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
+      {
+        test: /\.less$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: "css-loader",
+          },
+          {
+            loader: "less-loader",
+            options: { javascriptEnabled: true },
+          },
+        ],
+      },
       {
         test: /\.(png|jpg|gif)$/,
         loader: "url-loader?name=[path][name].[ext]&limit=50000",

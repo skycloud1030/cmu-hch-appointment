@@ -65,6 +65,16 @@ function fetch_data(room, timeCode) {
         (item) => item.status == "registered" && item.number < current_number
       );
 
+      if (_.isEmpty(appointment_list)) {
+        self.postMessage({
+          type: "error",
+          init: true,
+          current_number: 0,
+          total: 0,
+        });
+        return;
+      }
+
       self.postMessage({
         type: "success",
         room,
@@ -74,6 +84,7 @@ function fetch_data(room, timeCode) {
         next_number,
         register,
         list: appointment_list,
+        init: true,
       });
     });
 }

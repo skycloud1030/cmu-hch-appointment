@@ -28,9 +28,9 @@ function AppoList(props) {
       bordered
       dataSource={data}
       renderItem={(item) => {
-        const text = `${item.number} ${item.message}}`;
+        const text = `${item.number} ${item.message}`;
         let status = cacl_status(item.status);
-        if (number == current_number) {
+        if (item.number == current_number) {
           status = "processing";
         }
         return (

@@ -6,8 +6,19 @@ import thunk from "redux-thunk";
 import preload from "./preload";
 export const history = createHashHistory();
 
+const search = (state={}, action) => {
+  switch (action.type) {
+    case "SET_SEARCH":
+      const { type, ...rest } = action;
+      return { ...state, ...rest };
+    default:
+      return state;
+  }
+};
+
 const Reducer = combineReducers({
   router: connectRouter(history),
+  search,
 });
 
 const QMiddleWare = compose(
