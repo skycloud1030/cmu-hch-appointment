@@ -33,25 +33,6 @@ function NotifiForm(props) {
           </Button>,
         ]}
       >
-        <Space direction="vertical">
-          <div>
-            <Switch
-              checkedChildren="開啟"
-              unCheckedChildren="關閉"
-              defaultChecked={notifySwitch}
-              onChange={(checked) => setNotify(checked)}
-            />
-          </div>
-          <Input
-            style={{ width: 100 }}
-            min={0}
-            max={1024}
-            type="number"
-            placeholder="就診號"
-            onChange={onChangeBooking}
-            onPressEnter={onEnter}
-          />
-        </Space>
         {props.children}
       </Modal>
     </>
