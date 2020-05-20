@@ -11,15 +11,23 @@ const useNotification = () => {
   const permission = useRef(false);
 
   useEffect(() => {
-    Notification.requestPermission((val) => {
-      if (val === "granted") permission.current = true;
-    });
+    try {
+      if (!("Notification" in window)) {
+        console.log("This browser does not support desktop notification");
+        return;
+      }
+      Notification.requestPermission((val) => {
+        if (val === "granted") permission.current = true;
+      });
+    } catch {}
   }, []);
 
   const notify = useCallback((value) => {
-    if (permission.current) {
-      new Notification(value, setting);
-    }
+    try {
+      if (permission.current) {
+        new Notification(value, setting);
+      }
+    } catch {}
   }, []);
 
   return notify;
