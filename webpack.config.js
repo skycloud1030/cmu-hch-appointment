@@ -38,7 +38,7 @@ var config = {
       filename: "index.html",
       template: "./src/index.html",
     }),
-    new HardSourceWebpackPlugin(),
+    // new HardSourceWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: "[name].[contenthash:4].css",
       chunkFilename: "[name].[contenthash:4].css",

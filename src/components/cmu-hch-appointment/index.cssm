@@ -27,3 +27,7 @@
 .back {
   margin-right: 8px;
 }
+.space {
+  width: 100%;
+  vertical-align: top;
+}

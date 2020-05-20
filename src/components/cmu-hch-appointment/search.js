@@ -1,5 +1,4 @@
 import React from "react";
-import { useCallback } from "react";
 import { Card } from "antd";
 import { Input } from "antd";
 import { Select } from "antd";
@@ -14,12 +13,11 @@ function Search(props) {
   const { room, timecode } = props;
   const { onFinish } = props;
   return (
-    <Card>
-      <div className={styles.content}>
+    <div className={styles.content}>
+      <Card className={styles.form}>
         <Form
           onFinish={onFinish}
           name="search"
-          className={styles.form}
           initialValues={{ room, timecode }}
         >
           <Form.Item
@@ -44,8 +42,8 @@ function Search(props) {
             </Button>
           </Form.Item>
         </Form>
-      </div>
-    </Card>
+      </Card>
+    </div>
   );
 }
 

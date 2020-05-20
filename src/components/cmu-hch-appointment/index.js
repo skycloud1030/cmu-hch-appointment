@@ -47,10 +47,6 @@ const Title = React.memo((props) => {
   );
 });
 
-const onEnter = (e) => {
-  e.currentTarget.blur();
-};
-
 function Layout() {
   const { room, timecode } = useParams();
   const [data, setData] = useState({ current_number: 0 });
@@ -63,6 +59,11 @@ function Layout() {
   const onChangeBooking = useCallback((event) => {
     const val = _.toNumber(event.target.value);
     requestAnimationFrame(() => setBooking(val));
+  }, []);
+
+  const onEnter = useCallback((e) => {
+    e.preventDefault();
+    e.currentTarget.blur();
   }, []);
 
   useEffect(() => {
@@ -186,25 +187,17 @@ function Layout() {
   }, [data, progress]);
 
   return (
-    <div>
-      <Row className={styles.row}>
-        <Col xs={24}>
-          <Card title={title} loading={!data.init} className={styles.card}>
-            <Spin spinning={loading}>{progress_realTime}</Spin>
-          </Card>
-        </Col>
-      </Row>
-      <Row className={styles.row}>
-        <Col xs={24}>
-          <Card loading={!data.init}>
-            <Spin spinning={loading}>
-              <AppoList data={data.list} current_number={data.current_number} />
-            </Spin>
-          </Card>
-        </Col>
-        <BackTop />
-      </Row>
-    </div>
+    <Space direction="vertical" className={styles.space} size={12}>
+      <Card title={title} loading={!data.init} className={styles.card}>
+        <Spin spinning={loading}>{progress_realTime}</Spin>
+      </Card>
+      <Card loading={!data.init} className={styles.card}>
+        <Spin spinning={loading}>
+          <AppoList data={data.list} current_number={data.current_number} />
+        </Spin>
+      </Card>
+      <BackTop />
+    </Space>
   );
 }
 

@@ -26,7 +26,7 @@ function NotifiForm(props) {
       <Modal
         title="系統通知"
         visible={visible}
-        closable={false}
+        onCancel={onModalSwitch}
         footer={[
           <Button key="submit" type="primary" onClick={onModalSwitch}>
             關閉
