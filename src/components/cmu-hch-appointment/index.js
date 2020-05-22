@@ -12,6 +12,7 @@ import { Switch } from "antd";
 import { Space } from "antd";
 import { BackTop } from "antd";
 import { HomeOutlined } from "@ant-design/icons";
+
 import useNotification from "../../hooks/useNotification.js";
 import Worker from "./cmu.worker.js";
 import styles from "./index.cssm";
@@ -187,17 +188,20 @@ function Layout() {
   }, [data, progress]);
 
   return (
-    <Space direction="vertical" className={styles.space} size={12}>
-      <Card title={title} loading={!data.init} className={styles.card}>
-        <Spin spinning={loading}>{progress_realTime}</Spin>
-      </Card>
-      <Card loading={!data.init} className={styles.card}>
-        <Spin spinning={loading}>
-          <AppoList data={data.list} current_number={data.current_number} />
-        </Spin>
-      </Card>
-      <BackTop />
-    </Space>
+    <div className={styles.container}>
+      <Space direction="vertical" className={styles.space} size={12}>
+        <Card title={title} loading={!data.init} className={styles.card}>
+          <Spin spinning={loading}>{progress_realTime}</Spin>
+        </Card>
+
+        <Card loading={!data.init} className={styles.card}>
+          <Spin spinning={loading}>
+            <AppoList data={data.list} current_number={data.current_number} />
+          </Spin>
+        </Card>
+        <BackTop />
+      </Space>
+    </div>
   );
 }
 

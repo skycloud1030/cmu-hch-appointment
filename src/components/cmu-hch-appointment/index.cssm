@@ -30,4 +30,11 @@
 .space {
   width: 100%;
   vertical-align: top;
+  max-width: 800px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

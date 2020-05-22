@@ -1,13 +1,12 @@
-.form {
-  max-width: 600px;
-  width: 100%;
-}
-
-.content {
+.container {
   padding-top: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.form {
+  max-width: 800px;
+  width: 100%;
 }
 
 .button :global .ant-form-item-control {

@@ -13,7 +13,7 @@ function Search(props) {
   const { room, timecode } = props;
   const { onFinish } = props;
   return (
-    <div className={styles.content}>
+    <div className={styles.container}>
       <Card className={styles.form}>
         <Form
           onFinish={onFinish}
@@ -24,7 +24,11 @@ function Search(props) {
             name="room"
             rules={[{ required: true, message: "請輸入診間號" }]}
           >
-            <Input placeholder="診間號碼" prefix={<AimOutlined />} />
+            <Input
+              placeholder="診間號碼"
+              type="number"
+              prefix={<AimOutlined />}
+            />
           </Form.Item>
           <Form.Item
             name="timecode"

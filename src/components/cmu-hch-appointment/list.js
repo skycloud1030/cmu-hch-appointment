@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Badge } from "antd";
 import { List } from "antd";
+import styles from "./list.cssm";
 
 function cacl_status(val) {
   let out = "";
@@ -22,7 +23,8 @@ function cacl_status(val) {
 }
 
 function AppoList(props) {
-  const { data, current_number } = props;
+  const { data = [], current_number = 0 } = props;
+
   return (
     <List
       bordered
@@ -30,11 +32,13 @@ function AppoList(props) {
       renderItem={(item) => {
         const text = `${item.number} ${item.message}`;
         let status = cacl_status(item.status);
+        let current;
         if (item.number == current_number) {
           status = "processing";
+          current = styles.current;
         }
         return (
-          <List.Item>
+          <List.Item key={item.number} className={current}>
             <Badge status={status} text={text} />
           </List.Item>
         );
