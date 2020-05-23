@@ -29,12 +29,30 @@
 }
 .space {
   width: 100%;
-  vertical-align: top;
-  max-width: 800px;
 }
 
 .container {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.layout {
+  background-color: transparent;
+  width: 100%;
+  vertical-align: top;
+  max-width: 952px;
+}
+.header {
+  width: 100%;
+  padding: 0px;
+}
+.header :global .ant-row {
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 600;
+  font-size: 20px;
+  padding: 0 24px;
+}
+.content {
+  padding: 12px;
 }

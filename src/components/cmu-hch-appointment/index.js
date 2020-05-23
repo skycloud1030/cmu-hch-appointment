@@ -11,7 +11,8 @@ import { Empty } from "antd";
 import { Switch } from "antd";
 import { Space } from "antd";
 import { BackTop } from "antd";
-import { HomeOutlined } from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
+import { Layout } from "antd";
 
 import useNotification from "../../hooks/useNotification.js";
 import Worker from "./cmu.worker.js";
@@ -22,6 +23,8 @@ import AppoList from "./list.js";
 import _ from "lodash";
 import Badge from "react-shields-badge";
 import "react-shields-badge/dist/react-shields-badge.css";
+
+const { Header, Footer, Content } = Layout;
 
 let cvWorker;
 
@@ -38,7 +41,7 @@ const Title = React.memo((props) => {
           type="primary"
           shape="circle"
           onClick={onGobak}
-          icon={<HomeOutlined />}
+          icon={<SearchOutlined />}
           className={styles.back}
           size="large"
         />
@@ -48,7 +51,7 @@ const Title = React.memo((props) => {
   );
 });
 
-function Layout() {
+function Main() {
   const { room, timecode } = useParams();
   const [data, setData] = useState({ current_number: 0 });
   const [booking, setBooking] = useState(0);
@@ -189,20 +192,28 @@ function Layout() {
 
   return (
     <div className={styles.container}>
-      <Space direction="vertical" className={styles.space} size={12}>
-        <Card title={title} loading={!data.init} className={styles.card}>
-          <Spin spinning={loading}>{progress_realTime}</Spin>
-        </Card>
+      <Layout className={styles.layout}>
+        <Header className={styles.header}>{title}</Header>
+        <Content className={styles.content}>
+          <Space direction="vertical" className={styles.space} size={12}>
+            <Card loading={!data.init} className={styles.card}>
+              <Spin spinning={loading}>{progress_realTime}</Spin>
+            </Card>
 
-        <Card loading={!data.init} className={styles.card}>
-          <Spin spinning={loading}>
-            <AppoList data={data.list} current_number={data.current_number} />
-          </Spin>
-        </Card>
-        <BackTop />
-      </Space>
+            <Card loading={!data.init} className={styles.card}>
+              <Spin spinning={loading}>
+                <AppoList
+                  data={data.list}
+                  current_number={data.current_number}
+                />
+              </Spin>
+            </Card>
+            <BackTop />
+          </Space>
+        </Content>
+      </Layout>
     </div>
   );
 }
 
-export default React.memo(Layout);
+export default React.memo(Main);

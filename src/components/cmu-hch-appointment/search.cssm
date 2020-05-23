@@ -5,7 +5,7 @@
   justify-content: center;
 }
 .form {
-  max-width: 800px;
+  max-width: 952px;
   width: 100%;
 }
 
