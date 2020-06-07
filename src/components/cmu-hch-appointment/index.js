@@ -11,7 +11,7 @@ import { Empty } from "antd";
 import { Switch } from "antd";
 import { Space } from "antd";
 import { BackTop } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { HomeOutlined } from "@ant-design/icons";
 import { Layout } from "antd";
 
 import useNotification from "../../hooks/useNotification.js";
@@ -41,7 +41,7 @@ const Title = React.memo((props) => {
           type="primary"
           shape="circle"
           onClick={onGobak}
-          icon={<SearchOutlined />}
+          icon={<HomeOutlined />}
           className={styles.back}
           size="large"
         />

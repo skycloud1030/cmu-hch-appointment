@@ -33,7 +33,7 @@ var config = {
   },
   plugins: [
     new AntdDayjsWebpackPlugin(),
-    new CopyWebpackPlugin([{ from: "src/assert", to: "./" }]),
+    new CopyWebpackPlugin({ patterns: [{ from: "src/assert", to: "./" }] }),
     new HtmlWebpackPlugin({
       filename: "index.html",
       template: "./src/index.html",
