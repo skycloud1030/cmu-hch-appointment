@@ -145,9 +145,9 @@ function Main() {
               <Badge data={["看診時段", timeText]} />
               <Badge data={["最近更新", dayjs().format("MM-DD HH:mm")]} />
               <Badge data={["總人數", data.total]} />
-              <Badge data={["未看診人數", _.size(data.unregistered)]} />
+              <Badge data={["過號人數", _.size(data.unregistered)]} />
               {
-                bookingNumber ? <Badge data={["可能等待人數", progress.waiting]} /> : null
+                progress.waiting ? <Badge data={["等待人數", progress.waiting]} /> : null
               }
             </Space>
           </Col>
