@@ -24,7 +24,7 @@ import _ from "lodash";
 import Badge from "react-shields-badge";
 import "react-shields-badge/dist/react-shields-badge.css";
 
-const { Header, Footer, Content } = Layout;
+const { Header, Content } = Layout;
 
 let cvWorker;
 
@@ -54,15 +54,15 @@ const Title = React.memo((props) => {
 function Main() {
   const { room, timecode } = useParams();
   const [data, setData] = useState({ current_number: 0 });
-  const [booking, setBooking] = useState(0);
-  const [progress, setProgress] = useState({ percent: 100, status: "normal" });
+  const [bookingNumber, setBookingNumber] = useState(0);
+  const [progress, setProgress] = useState({ percent: 100, status: "normal", waiting: 0 });
   const [loading, setLoading] = useState(false);
   const [notifySwitch, setNotify] = useState(false);
   const notify = useNotification();
 
-  const onChangeBooking = useCallback((event) => {
+  const onChangeBookingNumber = useCallback((event) => {
     const val = _.toNumber(event.target.value);
-    requestAnimationFrame(() => setBooking(val));
+    requestAnimationFrame(() => setBookingNumber(val));
   }, []);
 
   const onEnter = useCallback((e) => {
@@ -100,8 +100,12 @@ function Main() {
   }, [timecode]);
 
   useEffect(() => {
-    let diff = _.subtract(booking, data.current_number);
-    let percent = _.divide(data.current_number, booking) * 100;
+    let diff = _.subtract(bookingNumber, data.current_number);
+    let percent = _.divide(data.current_number, bookingNumber) * 100;
+    const waiting = _.size(_.filter(
+      data.appointment_list,
+      (item) => item.status == "unregistered" && item.number >= data.current_number && item.number < bookingNumber
+    ));
     let status;
 
     switch (true) {
@@ -117,8 +121,8 @@ function Main() {
     }
     percent = diff > 0 ? percent : 100;
 
-    setProgress({ percent, status });
-  }, [booking, data.current_number]);
+    setProgress({ percent, status, waiting });
+  }, [bookingNumber, data.current_number]);
 
   useEffect(() => {
     if (notifySwitch) {
@@ -141,7 +145,10 @@ function Main() {
               <Badge data={["看診時段", timeText]} />
               <Badge data={["最近更新", dayjs().format("MM-DD HH:mm")]} />
               <Badge data={["總人數", data.total]} />
-              <Badge data={["過號人數", _.size(data.register)]} />
+              <Badge data={["未看診人數", _.size(data.unregistered)]} />
+              {
+                bookingNumber ? <Badge data={["可能等待人數", progress.waiting]} /> : null
+              }
             </Space>
           </Col>
           <Col xs={24}>
@@ -180,7 +187,7 @@ function Main() {
                 max={1024}
                 type="number"
                 placeholder="就診號"
-                onChange={onChangeBooking}
+                onChange={onChangeBookingNumber}
                 onPressEnter={onEnter}
               />
             </Space>

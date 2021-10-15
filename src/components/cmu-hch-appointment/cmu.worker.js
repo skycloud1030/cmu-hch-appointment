@@ -12,6 +12,7 @@ function cacl_status(val) {
   let out = "";
   switch (val) {
     case "未看診(已報到)":
+      // 官網已移除此選項
       out = "registered";
       break;
     case "完成":
@@ -37,7 +38,6 @@ function fetch_data(room, timeCode) {
       const result = str.match(regex_list);
       let [, room, number, info, ...rest] = result;
       let current_number = 0;
-      let next_number;
 
       try {
         let match_room = room.match(regex_room);
@@ -52,17 +52,14 @@ function fetch_data(room, timeCode) {
       const appointment_list = _.map(rest, (item) => {
         let [, number, message] = item.match(regex_item);
         let status = cacl_status(message);
-        if (!next_number && number > current_number && status == "registered") {
-          next_number = number;
-        }
         return { number, message, status };
       });
 
-      next_number = next_number ? next_number : 0;
-      // 過號
-      const register = _.filter(
+      
+      // 未看診
+      const unregistered = _.filter(
         appointment_list,
-        (item) => item.status == "registered" && item.number < current_number
+        (item) => item.status == "unregistered" && item.number < current_number
       );
 
       if (_.isEmpty(appointment_list)) {
@@ -81,8 +78,7 @@ function fetch_data(room, timeCode) {
         info,
         total: _.size(appointment_list),
         current_number,
-        next_number,
-        register,
+        unregistered,
         list: appointment_list,
         init: true,
       });
